@@ -83,7 +83,7 @@ Get an IP adress:
 
 In your FreeBSD box, fetch the installation script:
 
-    fetch -o /tmp/vagrant-setup.sh https://raw.github.com/wunki/vagrant-freebsd/master/bin/vagrant-setup.sh
+    fetch --no-verify-peer -o /tmp/vagrant-setup.sh https://raw.github.com/wunki/vagrant-freebsd/master/bin/vagrant-setup.sh
 
 Run it:
 

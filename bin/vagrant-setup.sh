@@ -4,7 +4,7 @@
 ################################################################################
 
 # Packages which are pre-installed
-INSTALLED_PACKAGES="virtualbox-ose-additions bash sudo"
+INSTALLED_PACKAGES="bash sudo"
 
 # Configuration files
 MAKE_CONF="https://raw.github.com/adrianrego/vagrant-freebsd/master/etc/make.conf"
