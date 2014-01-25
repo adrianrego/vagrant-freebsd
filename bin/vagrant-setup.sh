@@ -7,14 +7,10 @@
 INSTALLED_PACKAGES="virtualbox-ose-additions bash sudo"
 
 # Configuration files
-MAKE_CONF="https://raw.github.com/wunki/vagrant-freebsd/master/etc/make.conf"
-RC_CONF="https://raw.github.com/wunki/vagrant-freebsd/master/etc/rc.conf"
-RESOLV_CONF="https://raw.github.com/wunki/vagrant-freebsd/master/etc/resolv.conf"
-LOADER_CONF="https://raw.github.com/wunki/vagrant-freebsd/master/boot/loader.conf"
-PKG_CONF="https://raw.github.com/wunki/vagrant-freebsd/master/usr/local/etc/pkg.conf"
-
-# Message of the day
-MOTD="https://raw.github.com/wunki/vagrant-freebsd/master/etc/motd"
+MAKE_CONF="https://raw.github.com/adrianrego/vagrant-freebsd/master/etc/make.conf"
+RC_CONF="https://raw.github.com/adrianrego/vagrant-freebsd/master/etc/rc.conf"
+RESOLV_CONF="https://raw.github.com/adrianrego/vagrant-freebsd/master/etc/resolv.conf"
+LOADER_CONF="https://raw.github.com/adrianrego/vagrant-freebsd/master/boot/loader.conf"
 
 # Private key of Vagrant (you probable don't want to change this)
 VAGRANT_PRIVATE_KEY="https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub"
@@ -24,19 +20,10 @@ VAGRANT_PRIVATE_KEY="https://raw.github.com/mitchellh/vagrant/master/keys/vagran
 ################################################################################
 
 # Install the pkg management tool
-pkg_add -r pkg
+yes | pkg
 
 # make.conf
-fetch -o /etc/make.conf $MAKE_CONF
-
-# convert pkg
-pkg2ng
-
-# Setup pkgng
-cp /usr/local/etc/pkg.conf.sample /usr/local/etc/pkg.conf
-sed -i '' -e 's/http:\/\/pkg.freebsd.org\/${ABI}\/latest/http:\/\/pkg.wunki.org\/9_2-amd64-vagrant-default/g' /usr/local/etc/pkg.conf
-pkg update
-pkg upgrade -y
+fetch --no-verify-peer -o /etc/make.conf $MAKE_CONF
 
 # Install required packages
 for p in $INSTALLED_PACKAGES; do
@@ -61,23 +48,17 @@ touch /home/vagrant/.ssh/authorized_keys
 chown vagrant:vagrant /home/vagrant/.ssh
 
 # Get the public key and save it in the `authorized_keys`
-fetch -o /home/vagrant/.ssh/authorized_keys $VAGRANT_PRIVATE_KEY
+fetch --no-verify-peer -o /home/vagrant/.ssh/authorized_keys $VAGRANT_PRIVATE_KEY
 chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
 
 # rc.conf
-fetch -o /etc/rc.conf $RC_CONF
+fetch --no-verify-peer -o /etc/rc.conf $RC_CONF
 
 # resolv.conf
-fetch -o /etc/resolv.conf $RESOLV_CONF
+fetch --no-verify-peer -o /etc/resolv.conf $RESOLV_CONF
 
 # loader.conf
-fetch -o /boot/loader.conf $LOADER_CONF
-
-# motd
-fetch -o /etc/motd $MOTD
-
-# restore the original pkg.conf
-fetch -o /usr/local/etc/pkg.conf $PKG_CONF
+fetch --no-verify-peer -o /boot/loader.conf $LOADER_CONF
 
 ################################################################################
 # CLEANUP
